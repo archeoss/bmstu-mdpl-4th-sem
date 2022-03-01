@@ -17,8 +17,8 @@ DispMsg:
         mov     DS,AX
         mov     DX,OFFSET HelloMessage
         mov     CX,3
+        mov     AH,9
         print:
-                mov     AH,9
                 int     21h
                 loop print
         mov     AH,7
