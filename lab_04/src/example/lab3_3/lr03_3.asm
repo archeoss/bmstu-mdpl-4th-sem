@@ -33,10 +33,10 @@ assume DS:SD2
 	mov ds, ax
 	mov dl, S2
 	call output
-assume DS:SD3
+;assume DS:SD3  ; Вопрос от Кузнецова: как исправить не раскомментируя?
 	mov ax, SD3
 	mov ds, ax
-	mov dl, S3
+	mov dl, DS:S3  ; Вот так
 	call output
 	
 	mov ax, 4c00h
