@@ -9,7 +9,6 @@ DataMatr        SEGMENT PARA 'DATA'
 ROWS            DB      13
 COLS            DB      13
 Matrix          DB      9*9 DUP (0)
-                DB      '$'
 DataMatr        ENDS
 
 StkSeg  SEGMENT PARA STACK 'STACK'
@@ -88,7 +87,7 @@ Main:
                         add     AL,[Matrix + BX]        ; Считываем (i + 1) * 2 строку
                         sub     BL, 9
 
-                        mov     DL,10
+                        mov     DL,10                   ; Берем остаток от деленения на 10
                         div     DL
                         
                         mov     [Matrix + BX],AH        ; Заносим это в (i + 1) * 2 - 1 строку
@@ -100,11 +99,12 @@ Main:
 
                 sub     BL,COLS
                 add     BL, 9  
-                add     BL, 9                        ; Увеличиваем i на 1 (еще на один она увеличивается в ходе цикла)
+                add     BL, 9                           ; Прыгаем на 2 строчки вперед
                 mov     CL,DH
                 dec     DH
                 loop transform_matrix
 
+        call    New_Line
         mov     CL,COLS
         mov     DH,ROWS
 
