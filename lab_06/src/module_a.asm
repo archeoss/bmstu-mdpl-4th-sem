@@ -33,6 +33,7 @@ Commands        DW      Input_Number,
                         Output_hex,
                         Quit
 DataCommands    ENDS
+
 StkSeg  SEGMENT PARA STACK 'STACK'
         DB      200h DUP    (?)
 StkSeg  ENDS

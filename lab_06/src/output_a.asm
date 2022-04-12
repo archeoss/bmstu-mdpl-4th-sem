@@ -19,16 +19,19 @@ New_Line:
         ret   
     read:                           ; Нам нужно 2-е число, так что двигаем на 1
 
+        xor     AX,AX
 	    LODSB                                   ; Считываем из DS:SI, SI += 1
     
         sub     AX, '0'
-        mov     DX, AX
-        mov     AX, BX
-        mov     BL, 10
-        mul     BL
-        mov     BX,AX
-        add     BX,DX
+        mov     BX, AX
+        mov     AX, DX
+        xor     DX,DX
+        mov     DL, 10
+        mul     DX
+        mov     DX,AX
+        add     DX,BX
         loop    read
+        mov     BX,DX
         jmp     process
 Output_binary:
         ASSUME  DS: seg Number
@@ -41,7 +44,8 @@ Output_binary:
         xor     cx, cx
         mov     CL, Number + 1
         mov     AX, 0                           ; Сумма цифр, обнуляем
-        mov     BX, 0                           
+        mov     BX, 0 
+        mov     DX, 0                           
         jmp     read
     process:
         xor     cx, cx 
