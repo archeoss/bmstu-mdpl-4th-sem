@@ -1,5 +1,6 @@
 PUBLIC Output_hex
 EXTRN Number:byte
+EXTRN New_Line:near
 
 StkSeg  SEGMENT PARA STACK 'STACK'
         DB      200h DUP    (?)
@@ -8,14 +9,7 @@ StkSeg  ENDS
 Code    SEGMENT WORD PUBLIC 'CODE'
         ASSUME  CS:Code, SS:StkSeg
 
-New_Line:
-        mov     DL, 0Ah                 ; Выставляем курсор на новую строку (0A в stdout)
-        mov     AH, 2                   ; Вывод в stdout 
-        INT     21h
-        mov     DL, '$'                 ; Выставляем курсор на новую строку (0A в stdout)
-        mov     AH, 2                   ; Вывод в stdout 
-        INT     21h
-        ret   
+
     read:                           ; Нам нужно 2-е число, так что двигаем на 1
 
 	    LODSB                                   ; Считываем из DS:SI, SI += 1
@@ -47,23 +41,23 @@ Output_hex:
         mov     AX, BX
         mov     bx, 10h ; основание сс. 10 для десятеричной и т.п.
 
-    oi2:
+    stack_push:
         xor     dx,dx
         div     bx
         push    dx
         inc     cx
         test    ax, ax
-        jnz     oi2
+        jnz     stack_push
         mov     ah, 02h
-    oi3:
+    get:
         pop     dx
         cmp     dl,9
-        jbe     oi4
+        jbe     print
         add     dl,7
-    oi4:
+    print:
         add     dl, '0'
         int     21h
-        loop    oi3
+        loop    get
         
         ret
       

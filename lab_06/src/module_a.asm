@@ -9,24 +9,17 @@ EXTRN Number:byte
 EXTRN Output_binary:near
 EXTRN Output_hex:near
 EXTRN Input_Number:near
-
+EXTRN New_Line:near
 DataMessages    SEGMENT WORD 'DATA'
 HelloMessage    DB      13
                 DB      10
                 DB      'MDPL, Lab 06. Select command:'
-;                DB      '$'
-;InputMessage    DB      13
                 DB      10
                 DB      '1. Input: Unsigned decimal number'
-;                DB      '$'
-;Output_A        DB      13
                 DB      10
                 DB      '2. Output 1: Unsigned binary number'
-;                DB      '$'
-;Output_B        DB      13
                 DB      10
                 DB      '3. Output 2: Signed hexadecimal number'
-;                DB      '$'
                 DB      10
                 DB      '4. Quit'
                 DB      10
@@ -46,14 +39,7 @@ StkSeg  ENDS
 
 Code    SEGMENT WORD PUBLIC 'CODE'
         ASSUME  CS:Code, SS:StkSeg, DS:DataMessages
-New_Line:
-        mov     DL, 0Ah                 ; Выставляем курсор на новую строку (0A в stdout)
-        mov     AH, 2                   ; Вывод в stdout 
-        INT     21h
-        mov     DL, '$'                 ; Выставляем курсор на новую строку (0A в stdout)
-        mov     AH, 2                   ; Вывод в stdout 
-        INT     21h
-        ret  
+
 Print_Menu:
         ASSUME  DS:DataMessages
         mov     AX, DataMessages        ; Выставляем указатель на сегмент памяти

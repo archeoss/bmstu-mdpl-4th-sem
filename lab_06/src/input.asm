@@ -1,5 +1,7 @@
 PUBLIC Number
 PUBLIC Input_Number
+EXTRN New_Line:near
+
 DataNumber      SEGMENT Para    PUBLIC  'DATA'
 Number          DB      14
                 DB      14
@@ -8,14 +10,6 @@ DataNumber      ENDS
 
 Code    SEGMENT WORD PUBLIC 'CODE'
         ASSUME  CS:Code
-New_Line:
-        mov     DL, 0Ah                 ; Выставляем курсор на новую строку (0A в stdout)
-        mov     AH, 2                   ; Вывод в stdout 
-        INT     21h
-        mov     DL, '$'                 ; Выставляем курсор на новую строку (0A в stdout)
-        mov     AH, 2                   ; Вывод в stdout 
-        INT     21h
-        ret  
 Input_Number:
         ASSUME  DS:DataNumber
         mov     AX, DataNumber        ; Выставляем указатель на сегмент памяти

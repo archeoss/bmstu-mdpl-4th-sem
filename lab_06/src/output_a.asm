@@ -41,26 +41,26 @@ Output_binary:
         xor     cx, cx
         mov     CL, Number + 1
         mov     AX, 0                           ; Сумма цифр, обнуляем
-        mov     BX, 0                           ; Сумма цифр, обнуляем
+        mov     BX, 0                           
         jmp     read
     process:
         xor     cx, cx 
         mov     AX, BX
-        mov     bx, 2 ; основание сс. 10 для десятеричной и т.п.
+        mov     bx, 2                           ; основание CC
 
-    oi2:
+    stack_push:
         xor     dx,dx
         div     bx
         push    dx
         inc     cx
         test    ax, ax
-        jnz     oi2
+        jnz     stack_push
         mov     ah, 02h
-    oi3:
+    print:
         pop     dx
         add     dl, '0'
         int     21h
-        loop    oi3
+        loop    print
         
         ret
       
