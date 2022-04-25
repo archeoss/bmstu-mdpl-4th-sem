@@ -9,3 +9,6 @@ DOSXNT.EXE
 *.EXE
 *.OBJ
 *.COM
+
+*.o
+*.exe
