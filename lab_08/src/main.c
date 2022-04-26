@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#define __cdecl __attribute__((__cdecl__)) 
 int asmlen(const char *strptr)
 {
     int len = 0;
@@ -22,7 +23,7 @@ int asmlen(const char *strptr)
     return len + 1;
 }
 
-void strcpy(char *dstptr, char *srcptr, int n);
+void __cdecl strcpy(char *dstptr, char *srcptr, int n);
 
 int main()
 {
