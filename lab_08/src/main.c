@@ -32,9 +32,9 @@ int main()
     printf(">>>%d<<<\n", n);
     strcpy(test_cpy, test, n);
     printf(">>>%s<<<\n", test_cpy);
-    strcpy(test_cpy, test + 3, n);
+    strcpy(test_cpy, test + 3, 4);
     printf(">>>%s<<<\n", test_cpy);
-    strcpy(test_cpy, test_cpy + 3, n);
+    strcpy(test_cpy, test_cpy + 3, 4);
     printf(">>>%s<<<\n", test_cpy);
     return 0;
 }

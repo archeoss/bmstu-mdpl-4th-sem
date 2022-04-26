@@ -12,3 +12,5 @@ DOSXNT.EXE
 
 *.o
 *.exe
+
+.vscode
