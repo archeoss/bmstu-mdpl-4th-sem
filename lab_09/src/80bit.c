@@ -10,22 +10,22 @@ static void std_add_nums(long double a, long double b, long long reps)
     }
 }
 
-// static void asm_add_nums(long double a, long double b, long long reps)
-// {
-//     long double c = 0;
+static void asm_add_nums(long double a, long double b, long long reps)
+{
+    long double c = 0;
 
-//     for (int i = 0; i < reps; i++)
-//     {
-//         __asm__ (".intel_syntax noprefix\n\t"
-//                 "fld %1\n"
-//                 "fld %2\n"
-//                 "faddp\n"
-//                 "fstp %0\n"
-//                 : "=m"(c)
-//                 : "m"(a), "m"(b)
-//         );
-//     }
-// }
+    for (int i = 0; i < reps; i++)
+    {
+        __asm__ (".intel_syntax noprefix\n\t"
+                "fld %1\n"
+                "fld %2\n"
+                "faddp\n"
+                "fstp %0\n"
+                : "=m"(c)
+                : "m"(a), "m"(b)
+        );
+    }
+}
 
 static void std_mul_nums(long double a, long double b, long long reps)
 {
@@ -37,22 +37,22 @@ static void std_mul_nums(long double a, long double b, long long reps)
     }
 }
 
-// static void asm_mul_nums(long double a, long double b, long long reps)
-// {
-//     long double c = 0;
+static void asm_mul_nums(long double a, long double b, long long reps)
+{
+    long double c = 0;
 
-//     for (int i = 0; i < reps; i++)
-//     {
-//         __asm__ (".intel_syntax noprefix\n\t"
-//                 "fld %1\n"
-//                 "fld %2\n"
-//                 "fmulp\n"
-//                 "fstp %0\n"
-//                 : "=m"(c)
-//                 : "m"(a), "m"(b)
-//         );
-//     }
-// }
+    for (int i = 0; i < reps; i++)
+    {
+        __asm__ (".intel_syntax noprefix\n\t"
+                "fld %1\n"
+                "fld %2\n"
+                "fmulp\n"
+                "fstp %0\n"
+                : "=m"(c)
+                : "m"(a), "m"(b)
+        );
+    }
+}
 
 void test_80bit(long long reps, double* sum_asm, double* sum_std, double* mul_asm, double* mul_std)
 {
@@ -62,9 +62,9 @@ void test_80bit(long long reps, double* sum_asm, double* sum_std, double* mul_as
     int64_t elapsed_time;
 
     // sum assembly 
-    // gettimeofday(&tv_start, NULL);
-    // asm_add_nums(a, b, reps);
-    // gettimeofday(&tv_stop, NULL);
+    gettimeofday(&tv_start, NULL);
+    asm_add_nums(a, b, reps);
+    gettimeofday(&tv_stop, NULL);
 
     elapsed_time = (tv_stop.tv_sec - tv_start.tv_sec) * 1000000LL +
     (tv_stop.tv_usec - tv_start.tv_usec); // usec
@@ -80,9 +80,9 @@ void test_80bit(long long reps, double* sum_asm, double* sum_std, double* mul_as
     *sum_std = ((double) elapsed_time / reps);
 
     // mul assembly 
-    // gettimeofday(&tv_start, NULL);
-    // asm_mul_nums(a, b, reps);
-    // gettimeofday(&tv_stop, NULL);
+    gettimeofday(&tv_start, NULL);
+    asm_mul_nums(a, b, reps);
+    gettimeofday(&tv_stop, NULL);
 
     elapsed_time = (tv_stop.tv_sec - tv_start.tv_sec) * 1000000LL +
     (tv_stop.tv_usec - tv_start.tv_usec); // usec

@@ -1,42 +1,33 @@
-#include <stdio.h>
+#include "32bit.h"
+#include "64bit.h"
+#include "80bit.h"
+#include "sin.h"
 
-#define __cdecl __attribute__((__cdecl__)) 
-int asmlen(const char *strptr)
+int main(void)
 {
-    int len = 0;
-    const char *ptr = strptr;
-    asm(
-        "mov %1, %%rdi      \n"
-        "xor %%ecx, %%ecx   \n"
-        "not %%ecx          \n"
-        "xor %%al, %%al     \n"
-        "cld                \n"
-        "repne scasb        \n"
-        "not %%ecx          \n"
-        "dec %%ecx          \n"
-        "mov %%ecx, %0      \n"
-        :"=r"(len)
-        :"r"(ptr)
-        :"%ecx", "%al", "%rdi" 
-    );
+    long long reps = 1e10;
+    double sum_asm = 0, sum_std = 0, mul_asm = 0, mul_std = 0;
 
-    return len + 1;
-}
+    printf("Sum\t\t\t\t Mul\n");
+    printf("\tasm\t\t std\t\t asm\t\t std\t\n");
 
-void __cdecl strcpy(char *dstptr, char *srcptr, int n);
+    test_32bit(reps, &sum_asm, &sum_std, &mul_asm, &mul_std);
+    printf("32bit:\t%lf\t %lf\t %lf\t %lf\t\n", sum_asm, sum_std, mul_asm, mul_std);
 
-int main()
-{
-    char test[] = "qwertyasdfg";    // len = 12
-    char test_cpy[64];
-    int n = asmlen(test);
-    printf(">>>%d<<<\n", n);
-    strcpy(test_cpy, test, n);
-    printf(">>>%s<<<\n", test_cpy);
-    strcpy(test_cpy, test + 3, 4);
-    printf(">>>%s<<<\n", test_cpy);
-    strcpy(test_cpy, test_cpy + 3, 4);
-    printf(">>>%s<<<\n", test_cpy);
+    test_64bit(reps, &sum_asm, &sum_std, &mul_asm, &mul_std);
+    printf("64bit:\t%lf\t %lf\t %lf\t %lf\t\n", sum_asm, sum_std, mul_asm, mul_std);
+
+    test_80bit(reps, &sum_asm, &sum_std, &mul_asm, &mul_std);
+    printf("80bit:\t%lf\t %lf\t %lf\t %lf\t\n", sum_asm, sum_std, mul_asm, mul_std);
+
+    
+    double short_sin = 0, short_halfsin = 0, long_sin = 0, long_halfsin = 0, prep_sin = 0, prep_halfsin = 0;
+    printf("Sin:\t\n");
+    test_sin(&short_sin, &short_halfsin, &long_sin, &long_halfsin, &prep_sin, &prep_halfsin);
+    printf("3.14\t\t3.141596\tPreproccesor\t\t\n");
+    printf("%lf\t%lf\t%lf\t\n", short_sin, long_sin, prep_sin);
+    printf("3.14 / 2\t3.141596 / 2\tPreproccesor / 2\t\t\n");
+    printf("%lf\t%lf\t%lf\t\n", short_halfsin, long_halfsin, prep_halfsin);
     return 0;
 }
 

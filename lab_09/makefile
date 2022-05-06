@@ -1,32 +1,42 @@
 CC := gcc
-FLAGS := -Werror -masm=intel
+FLAGS := -masm=intel
+SRC := ./src/
+OUT := ./out/
+OBJH := ${OUT}32bit.o ${OUT}64bit.o ${OUT}80bith.o ${OUT}sin.o
+OBJS := ${OUT}32bit.o ${OUT}64bit.o ${OUT}80bits.o ${OUT}sin.o
+HEADERS := ${SRC}32bit.h ${SRC}64bit.h ${SRC}80bit.h ${SRC}sin.h
 
-OBJ := 32bit.o 64bit.o 80bit.o
-HEADERS := 32bit.h 64bit.h 80bit.h
+hard	 : FLAGS += -m80387
+hard	 : mainh.exe
 
-m	 : FLAGS += -m80387
-m	 : main.exe
+soft	 : FLAGS += -mno-80387
+soft	 : mains.exe
 
-nom	 : FLAGS += -msoft-float --with-multilib-list=armv6-m
-nom	 : main.exe
-
-main.exe: main.o $(OBJ)
+mains.exe: ${OUT}main.o $(OBJS)
 	$(CC) $(FLAGS) $^ -o $@
-	$(RM) $(OUT)*.o
 
-main.o : main.c $(HEADERS)
-	$(CC) $(FLAGS) -c $<
+mainh.exe: ${OUT}main.o $(OBJH)
+	$(CC) $(FLAGS) $^ -o $@
 
-32bit.o : 32bit.c 32bit.h
-	$(CC) $(FLAGS) -c $<
+${OUT}main.o : ${SRC}main.c $(HEADERS)
+	$(CC) $(FLAGS) -c $< -o $@
 
-64bit.o : 64bit.c 64bit.h
-	$(CC) $(FLAGS) -c $<
+${OUT}32bit.o : ${SRC}32bit.c ${SRC}32bit.h
+	$(CC) $(FLAGS) -c $< -o $@
 
-80bit.o : 80bit.c 80bit.h
-	$(CC) $(FLAGS) -c $<	
+${OUT}64bit.o : ${SRC}64bit.c ${SRC}64bit.h
+	$(CC) $(FLAGS) -c $< -o $@
 
-.PHONY : clean m nom
+${OUT}80bith.o : ${SRC}80bit.c ${SRC}80bit.h
+	$(CC) $(FLAGS) -c $< -o $@
+
+${OUT}80bits.o : ${SRC}80bit.c ${SRC}80bit.h
+	$(CC) -masm=intel -c $< -o $@
+
+${OUT}sin.o : ${SRC}sin.c ${SRC}sin.h
+	$(CC) $(FLAGS) -c $< -o $@
+
+.PHONY : clean hard soft
 
 clean :
 	$(RM) $(OUT)*.o *.exe
