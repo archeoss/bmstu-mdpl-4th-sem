@@ -6,10 +6,10 @@ OBJH := ${OUT}32bit.o ${OUT}64bit.o ${OUT}80bith.o ${OUT}sin.o
 OBJS := ${OUT}32bit.o ${OUT}64bit.o ${OUT}80bits.o ${OUT}sin.o
 HEADERS := ${SRC}32bit.h ${SRC}64bit.h ${SRC}80bit.h ${SRC}sin.h
 
-hard	 : FLAGS += -m80387
+hard	 : FLAGS += -mhard-float -mfpmath=387
 hard	 : mainh.exe
 
-soft	 : FLAGS += -mno-80387
+soft	 : FLAGS += -msoft-float
 soft	 : mains.exe
 
 mains.exe: ${OUT}main.o $(OBJS)

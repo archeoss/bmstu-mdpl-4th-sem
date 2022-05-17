@@ -14,12 +14,11 @@ static void asm_add_nums(float a, float b, long long reps)
 {
     float c = 0;
 
-    for (int i = 0; i < reps; i++)
+    for (int i = 0; i < reps; ++i)
     {
         __asm__ (
                 "fld %1\n"
-                "fld %2\n"
-                "faddp\n"
+                "fadd %2\n"
                 "fstp %0\n"
                 : "=m"(c)
                 : "m"(a), "m"(b)
@@ -43,10 +42,9 @@ static void asm_mul_nums(float a, float b, long long reps)
 
     for (int i = 0; i < reps; i++)
     {
-        __asm__ (".intel_syntax noprefix\n\t"
+        __asm__ ("\t"
                 "fld %1\n"
-                "fld %2\n"
-                "fmulp\n"
+                "fmul %2\n"
                 "fstp %0\n"
                 : "=m"(c)
                 : "m"(a), "m"(b)
